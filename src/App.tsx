@@ -50,7 +50,7 @@ function App() {
           <div className={"copyright"}>
             Powered by{" "}
             <a href={"https://sushi.com"} target={"_blank"}>
-              SushiSwap
+              Sushi.com
             </a>
           </div>
           <div className={"copyright"}>
