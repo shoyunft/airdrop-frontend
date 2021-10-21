@@ -1,5 +1,5 @@
 {
-  "name": "shoyu-airdrop-frontend",
+  "name": "@shoyunft/airdrop-frontend",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
