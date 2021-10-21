@@ -1,0 +1,78 @@
+@font-face {
+  font-family: 'Ivar Display';
+  src: local('Ivar Display'), local('IvarDisplay'),
+  url(../fonts/IvarDisplay-Regular.woff2) format('woff2'),
+  url(../fonts/IvarDisplay-Regular.woff) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  font-family: 'Ivar Display', sans-serif;
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.7;
+}
+
+header {
+  font-family: sans-serif;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+a {
+  text-decoration: none;
+}
+
+a:link {
+  color: black;
+}
+
+/* visited link */
+a:visited {
+  color: black;
+}
+
+/* mouse over link */
+a:hover {
+  color: black;
+}
+
+/* selected link */
+a:active {
+  color: black;
+}
+
+button {
+  cursor: pointer;
+}
+
+.button {
+  background: black;
+  border-color: black;
+  color: white;
+  font-size: 18px;
+  min-width: 400px;
+  padding: 12px 16px;
+}
+
+.button.inverted {
+  background: white;
+  border-color: black;
+  color: black;
+}
+
+.button.inverted.disabled {
+  color: grey;
+  cursor: default;
+}
+
+.error {
+  font-family: sans-serif;
+  font-size: 20px;
+  color: red;
+}
