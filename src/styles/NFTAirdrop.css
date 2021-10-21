@@ -23,8 +23,21 @@
     font-size: 56px;
 }
 
+.name-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .name {
     font-size: 36px;
+}
+
+.info-icon {
+    font-family: sans-serif;
+    margin-left: 16px;
+    width: 20px;
+    height: 20px;
 }
 
 .artist {

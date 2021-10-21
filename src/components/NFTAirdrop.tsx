@@ -1,14 +1,16 @@
 import React from "react";
 import { Event } from "ethers";
 
-import "../styles/NFT.css";
+import "../styles/NFTAirdrop.css";
 import useClaimer from "../hooks/useClaimer";
 import { EthereumContext } from "../hooks/useEthereum";
 import GLBViewer from "./GLBViewer";
+import IconInfo from "../images/icon-info.png";
 
 export interface NFTAirdropData {
   standard: string;
   type: string;
+  announcement?: string;
   url: string;
   title: string;
   name: string;
@@ -42,7 +44,16 @@ const NFTAirdrop = ({
         <div className={"glb-viewer"}>
           <GLBViewer url={data.url} width={720} height={440} />
         </div>
-        <div className={"name"}>{data.name}</div>
+        <div className={"name-container"}>
+          <div className={"name"}>{data.name}</div>
+          {data.announcement && (
+            <div className={"info-icon"}>
+              <a href={data.announcement} target={"_blank"}>
+                <img src={IconInfo} alt={"info"} width={20} height={20} />
+              </a>
+            </div>
+          )}
+        </div>
         <a className={"artist"} href={data.artist_url} target={"_blank"}>
           by {data.artist_name}
         </a>
