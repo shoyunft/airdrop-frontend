@@ -96,7 +96,14 @@ const NFTAirdrop = ({
         <div className={"description"}>{data.description}</div>
         <div className={"button-container"}>
           {context.isConnected ? (
-            loadingClaimEvent ? (
+            context.chainId != 1 ? (
+              <button
+                className={"button inverted"}
+                onClick={context.onSwitchToMainnet}
+              >
+                Change Network to Ethereum Mainnet
+              </button>
+            ) : loadingClaimEvent ? (
               <button className={"button inverted disabled"}>Loading...</button>
             ) : claiming ? (
               <button className={"button inverted disabled"}>
