@@ -1,3 +1,4 @@
+import { utils } from "ethers";
 import React, { useEffect, useState } from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { HiOutlineExternalLink } from "react-icons/hi";
@@ -115,6 +116,10 @@ const NFTAirdrop = ({
                 onClick={context.onSwitchToMainnet}
               >
                 Change Network to Ethereum Mainnet
+              </button>
+            ) : !data.recipients.includes(utils.getAddress(context.address)) ? (
+              <button className={"button inverted disabled"}>
+                You're not on the whitelist
               </button>
             ) : loadingClaimEvent ? (
               <button className={"button inverted disabled"}>Loading...</button>
