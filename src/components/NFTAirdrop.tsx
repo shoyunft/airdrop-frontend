@@ -1,5 +1,7 @@
 import React from "react";
 import { Event } from "ethers";
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 import "../styles/NFTAirdrop.css";
 import useClaimer from "../hooks/useClaimer";
@@ -12,6 +14,7 @@ export interface NFTAirdropData {
   type: string;
   announcement?: string;
   url: string;
+  mime_type: string;
   title: string;
   name: string;
   artist_name: string;
@@ -24,9 +27,13 @@ export interface NFTAirdropData {
 const NFTAirdrop = ({
   data,
   context,
+  prev,
+  next,
 }: {
   data: NFTAirdropData;
   context: EthereumContext;
+  prev?: { name: string; path: string };
+  next?: { name: string; path: string };
 }) => {
   const { claimEvent, loadingClaimEvent, onClaim, claimError } = useClaimer(
     context.ethereum,
@@ -41,9 +48,21 @@ const NFTAirdrop = ({
     <div className={"container"}>
       <div className={"content"}>
         <div className={"title"}>{data.title}</div>
-        <div className={"glb-viewer"}>
-          <GLBViewer url={data.url} width={720} height={440} />
-        </div>
+        {data.type == "3d" ? (
+          <div className={"glb-viewer"}>
+            <GLBViewer url={data.url} width={720} height={440} />
+          </div>
+        ) : data.type == "video" ? (
+          <div className={"video-container"}>
+            <video controls width={720} height={440} autoPlay={true}>
+              <source src={data.url} type={data.mime_type} />
+            </video>
+          </div>
+        ) : (
+          <div className={"image-container"}>
+            <img src={data.url} width={720} height={440} alt={"image"} />
+          </div>
+        )}
         <div className={"name-container"}>
           <div className={"name"}>{data.name}</div>
           {data.announcement && (
@@ -78,6 +97,24 @@ const NFTAirdrop = ({
           )}
         </div>
         {claimError && <div className={"error"}>{claimEvent}</div>}
+        <div className={"pagination"}>
+          {prev ? (
+            <Link className={"icon-container"} to={prev.path}>
+              <BsChevronLeft size={16} />
+              <span>{prev.name}</span>
+            </Link>
+          ) : (
+            <div> </div>
+          )}
+          {next ? (
+            <Link className={"icon-container"} to={next.path}>
+              <span>{next.name}</span>
+              <BsChevronRight size={16} />
+            </Link>
+          ) : (
+            <div> </div>
+          )}
+        </div>
       </div>
     </div>
   );
