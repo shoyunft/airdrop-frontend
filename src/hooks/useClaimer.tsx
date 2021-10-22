@@ -30,6 +30,10 @@ const useClaimer = (
   const tree = new MerkleTree(leaves, keccak256, { sort: true });
 
   useEffect(() => {
+    setLoadingClaimEvent(false);
+    setClaimInfo();
+    setClaiming(false);
+    setError("");
     if (ethereum) {
       const signer = new ethers.providers.Web3Provider(ethereum).getSigner();
       setContract(

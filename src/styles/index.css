@@ -104,6 +104,14 @@ button {
   margin-bottom: -4px;
 }
 
+.warning {
+  margin-top: 8px;
+  font-family: sans-serif;
+  font-size: 16px;
+  color: orange;
+  text-align: end;
+}
+
 .error {
   margin-top: 8px;
   font-family: sans-serif;
