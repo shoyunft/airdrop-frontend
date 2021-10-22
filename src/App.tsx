@@ -9,6 +9,7 @@ import LogoSquared from "./images/logo-squared.jpeg";
 import sak3 from "./data/sak3.json";
 import ethernaal from "./data/ethernaal.json";
 import mover from "./data/mover.json";
+import maid from "./data/maid.json";
 
 const sak3Page = {
   name: sak3.name + " - " + sak3.title,
@@ -23,6 +24,11 @@ const ethernaalPage = {
 const moverPage = {
   name: mover.name + " - " + mover.title,
   path: "/mover",
+};
+
+const maidPage = {
+  name: maid.name + " - " + maid.title,
+  path: "/maid",
 };
 
 function App() {
@@ -47,8 +53,16 @@ function App() {
         </header>
         <div className={"body"}>
           <Switch>
+            <Route path="/maid">
+              <NFTAirdrop data={maid} context={context} prev={moverPage} />
+            </Route>
             <Route path="/mover">
-              <NFTAirdrop data={mover} context={context} prev={ethernaalPage} />
+              <NFTAirdrop
+                data={mover}
+                context={context}
+                prev={ethernaalPage}
+                next={maidPage}
+              />
             </Route>
             <Route path="/ethernaal">
               <NFTAirdrop

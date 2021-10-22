@@ -95,11 +95,19 @@ button {
 
 .button.inverted.disabled {
   color: grey;
+  border-color: grey;
   cursor: default;
 }
 
+.button svg {
+  margin-left: 4px;
+  margin-bottom: -4px;
+}
+
 .error {
+  margin-top: 8px;
   font-family: sans-serif;
-  font-size: 20px;
+  font-size: 16px;
   color: red;
+  text-align: end;
 }

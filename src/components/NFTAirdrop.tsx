@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { Event } from "ethers";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { HiOutlineExternalLink } from "react-icons/hi";
 import { useLocation, Link } from "react-router-dom";
 
 import "../styles/NFTAirdrop.css";
-import useClaimer from "../hooks/useClaimer";
+import useClaimer, { ClaimInfo } from "../hooks/useClaimer";
 import { EthereumContext } from "../hooks/useEthereum";
 import GLBViewer from "./GLBViewer";
 import IconInfo from "../images/icon-info.png";
@@ -39,16 +39,28 @@ const NFTAirdrop = ({
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-  const { claimEvent, loadingClaimEvent, onClaim, claimError } = useClaimer(
-    context.ethereum,
-    data.standard == "ERC1155",
-    data.address,
-    data.recipients,
-    context.address,
-    location
-  );
-  const onViewTx = (event: Event) => () =>
-    window.open("https://etherscan.io/tx/" + event.transactionHash);
+  const { claimInfo, loadingClaimEvent, onClaim, claiming, claimError } =
+    useClaimer(
+      context.ethereum,
+      data.standard == "ERC1155",
+      data.address,
+      data.recipients,
+      context.address,
+      location
+    );
+  const onView = (info: ClaimInfo) => () => {
+    let url;
+    if (data.standard == "ERC721" && info.address && info.tokenId) {
+      url =
+        "https://opensea.io/assets/" +
+        info.address +
+        "/" +
+        info.tokenId.toString();
+    } else {
+      url = "https://etherscan.io/tx/" + info.txHash;
+    }
+    window.open(url);
+  };
   return (
     <div className={"container"}>
       <div className={"content"}>
@@ -86,9 +98,13 @@ const NFTAirdrop = ({
           {context.isConnected ? (
             loadingClaimEvent ? (
               <button className={"button inverted disabled"}>Loading...</button>
-            ) : claimEvent ? (
-              <button className={"button"} onClick={onViewTx(claimEvent)}>
-                You already claimed this NFT
+            ) : claiming ? (
+              <button className={"button inverted disabled"}>
+                Claiming...
+              </button>
+            ) : claimInfo ? (
+              <button className={"button"} onClick={onView(claimInfo)}>
+                You already claimed this NFT <HiOutlineExternalLink size={20} />
               </button>
             ) : (
               <button className={"button"} onClick={onClaim}>
@@ -101,7 +117,7 @@ const NFTAirdrop = ({
             </button>
           )}
         </div>
-        {claimError && <div className={"error"}>{claimEvent}</div>}
+        {claimError && <div className={"error"}>{claimError}</div>}
         <div className={"pagination"}>
           {prev ? (
             <Link className={"icon-container"} to={prev.path}>

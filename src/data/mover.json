@@ -1,6 +1,7 @@
 {
   "standard": "ERC1155",
   "type": "video",
+  "announcement": "https://viaMover.com",
   "url": "https://shoyu.mypinata.cloud/ipfs/QmcdL4b1wh5mzLQu8WpbcoA7e7zhM9icdf39fZJ2edFMCf",
   "mime_type": "video/webm",
   "title": "Mover",

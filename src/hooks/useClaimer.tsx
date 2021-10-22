@@ -1,9 +1,16 @@
-import { Contract, ethers, Event } from "ethers";
+import { TransactionResponse } from "@ethersproject/providers";
+import { BigNumberish, Contract, ethers } from "ethers";
 import { MerkleTree } from "merkletreejs";
 import keccak256 from "keccak256";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import NFT721AirdropV1 from "../abis/NFT721AirdropV1.json";
 import NFT1155AirdropV1 from "../abis/NFT1155AirdropV1.json";
+
+export interface ClaimInfo {
+  txHash: string;
+  address: string;
+  tokenId: BigNumberish | null;
+}
 
 const useClaimer = (
   ethereum,
@@ -15,8 +22,9 @@ const useClaimer = (
 ) => {
   const [contract, setContract] = useState<Contract>();
   const [loadingClaimEvent, setLoadingClaimEvent] = useState(true);
-  const [claimEvent, setClaimEvent] = useState<Event>();
-  const [claimError, setClaimError] = useState("");
+  const [claimInfo, setClaimInfo] = useState<ClaimInfo>();
+  const [claiming, setClaiming] = useState(false);
+  const [error, setError] = useState("");
 
   const leaves = recipients.map((v) => keccak256(v));
   const tree = new MerkleTree(leaves, keccak256, { sort: true });
@@ -36,7 +44,7 @@ const useClaimer = (
 
   useEffect(() => {
     if (address && contract) {
-      setClaimError(false);
+      setError(false);
       setLoadingClaimEvent(true);
       const merkleRoot = tree.getHexRoot();
       contract
@@ -44,31 +52,64 @@ const useClaimer = (
           contract.filters.Claim(merkleRoot, erc1155 ? 0 : null, address)
         )
         .then((events) => {
-          setClaimEvent(events?.[0]);
+          console.log(events[0]);
+          if (events && events.length > 0)
+            contract.nftContract().then((address) => {
+              setClaimInfo({
+                txHash: events[0].transactionHash,
+                address,
+                tokenId: events[0].args.tokenId,
+              });
+            });
         })
-        .catch((e) => setClaimError(e.message))
+        .catch((e) => setError(e.message))
         .finally(() => setLoadingClaimEvent(false));
     }
   }, [address, contract]);
 
-  const onClaim = async () => {
-    setClaimError("");
-    const leaf = keccak256(address);
-    const proof = tree
-      .getHexProof(leaf)
-      .map((item) => ethers.utils.arrayify(item));
+  const onClaim = useCallback(async () => {
+    setError("");
+    setClaiming(true);
     try {
+      const leaf = keccak256(address);
+      const proof = tree
+        .getHexProof(leaf)
+        .map((item) => ethers.utils.arrayify(item));
       const params = erc1155
         ? [tree.getHexRoot(), 0, proof]
         : [tree.getHexRoot(), proof];
-      const tx = await contract.claim(...params);
-      await tx.wait();
+      const tx: TransactionResponse = await contract.claim(...params);
+      const receipt = await tx.wait();
+      const info = {
+        txHash: receipt.transactionHash,
+        address: "",
+        tokenId: null,
+      };
+      if (receipt.logs.length > 1) {
+        const event = contract.interface.parseLog(receipt.logs[1]);
+        info.address = await contract.nftContract();
+        info.tokenId = event.args.tokenId;
+      }
+      setClaimInfo(info);
     } catch (e) {
-      setClaimError(e.message);
+      setError(e.message);
+    } finally {
+      setClaiming(false);
     }
-  };
+  }, [address, tree]);
 
-  return { claimEvent, loadingClaimEvent, onClaim, claimError };
+  let claimError = error;
+  if (error && error.includes('"message":"')) {
+    claimError = error.split('"message":"')[1].split('","data":')[0];
+  }
+
+  return {
+    claimInfo,
+    loadingClaimEvent,
+    onClaim,
+    claiming,
+    claimError,
+  };
 };
 
 export default useClaimer;
