@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Event } from "ethers";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 import "../styles/NFTAirdrop.css";
 import useClaimer from "../hooks/useClaimer";
@@ -35,12 +35,17 @@ const NFTAirdrop = ({
   prev?: { name: string; path: string };
   next?: { name: string; path: string };
 }) => {
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
   const { claimEvent, loadingClaimEvent, onClaim, claimError } = useClaimer(
     context.ethereum,
     data.standard == "ERC1155",
     data.address,
     data.recipients,
-    context.address
+    context.address,
+    location
   );
   const onViewTx = (event: Event) => () =>
     window.open("https://etherscan.io/tx/" + event.transactionHash);

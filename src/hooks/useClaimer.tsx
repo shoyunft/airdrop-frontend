@@ -10,7 +10,8 @@ const useClaimer = (
   erc1155: boolean,
   contractAddress: string,
   recipients: string[],
-  address: string
+  address: string,
+  location
 ) => {
   const [contract, setContract] = useState<Contract>();
   const [loadingClaimEvent, setLoadingClaimEvent] = useState(true);
@@ -31,7 +32,7 @@ const useClaimer = (
         )
       );
     }
-  }, [ethereum]);
+  }, [ethereum, location.pathname]);
 
   useEffect(() => {
     if (address && contract) {
