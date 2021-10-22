@@ -7,11 +7,17 @@ import ShoyuLogo from "./components/ShoyuLogo";
 import useEthereum from "./hooks/useEthereum";
 import LogoSquared from "./images/logo-squared.jpeg";
 import sak3 from "./data/sak3.json";
+import ethernaal from "./data/ethernaal.json";
 import mover from "./data/mover.json";
 
 const sak3Page = {
   name: sak3.name + " - " + sak3.title,
   path: "/",
+};
+
+const ethernaalPage = {
+  name: ethernaal.name + " - " + ethernaal.title,
+  path: "/ethernaal",
 };
 
 const moverPage = {
@@ -42,10 +48,18 @@ function App() {
         <div className={"body"}>
           <Switch>
             <Route path="/mover">
-              <NFTAirdrop data={mover} context={context} prev={sak3Page} />
+              <NFTAirdrop data={mover} context={context} prev={ethernaalPage} />
+            </Route>
+            <Route path="/ethernaal">
+              <NFTAirdrop
+                data={ethernaal}
+                context={context}
+                prev={sak3Page}
+                next={moverPage}
+              />
             </Route>
             <Route path="/">
-              <NFTAirdrop data={sak3} context={context} next={moverPage} />
+              <NFTAirdrop data={sak3} context={context} next={ethernaalPage} />
             </Route>
           </Switch>
         </div>
