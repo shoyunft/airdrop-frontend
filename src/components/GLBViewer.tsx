@@ -7,7 +7,7 @@ const GLBViewer = ({ url, width, height }) => {
       width={width}
       height={height}
       rotation={{ x: -0.008, y: 0.49, z: 0.005 }}
-      position={{ x: 0.5, y: 0.2, z: 1.0 }}
+      position={{ x: 0.7, y: 0.2, z: 1.3 }}
     >
       <AmbientLight color={0xffffff} />
       <DirectionLight color={0xffffff} position={{ x: -20, y: 10, z: 40 }} />

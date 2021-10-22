@@ -81,7 +81,7 @@ const NFTAirdrop = ({
         <div className={"title"}>{data.title}</div>
         {data.type == "3d" ? (
           <div className={"glb-viewer"}>
-            <GLBViewer url={data.url} width={720} height={440} />
+            <GLBViewer url={data.url} width={1024} height={440} />
           </div>
         ) : data.type == "video" ? (
           <div className={"video-container"}>
