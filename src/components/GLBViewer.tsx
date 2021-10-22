@@ -6,11 +6,13 @@ const GLBViewer = ({ url, width, height }) => {
       src={url}
       width={width}
       height={height}
-      rotation={{ x: -0.1, y: 0.22, z: 0.02 }}
-      position={{ x: 0.9, y: 0.5, z: 4 }}
+      rotation={{ x: -0.008, y: 0.49, z: 0.005 }}
+      position={{ x: 0.5, y: 0.2, z: 1.0 }}
     >
       <AmbientLight color={0xffffff} />
+      <DirectionLight color={0xffffff} position={{ x: -20, y: 10, z: 40 }} />
       <DirectionLight color={0xffffff} position={{ x: -20, y: 30, z: 40 }} />
+      <DirectionLight color={0xffffff} position={{ x: 20, y: 20, z: 40 }} />
       <DirectionLight color={0xffffff} position={{ x: 20, y: 30, z: 40 }} />
       <DirectionLight color={0xffffff} position={{ x: -20, y: 100, z: -40 }} />
     </GLTFModel>
