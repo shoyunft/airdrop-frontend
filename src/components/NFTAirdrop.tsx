@@ -67,6 +67,7 @@ const NFTAirdrop = ({
       location
     );
   const notWhitelisted = !data.recipients
+    .filter((address) => !!address)
     .map(utils.getAddress)
     .includes(utils.getAddress(context.address));
   const onView = (info: ClaimInfo) => () => {
