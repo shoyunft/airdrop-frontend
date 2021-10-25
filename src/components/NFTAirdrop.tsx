@@ -66,10 +66,12 @@ const NFTAirdrop = ({
       context.address,
       location
     );
-  const notWhitelisted = !data.recipients
-    .filter((address) => !!address)
-    .map(utils.getAddress)
-    .includes(utils.getAddress(context.address));
+  const notWhitelisted =
+    utils.isAddress(context.address) &&
+    !data.recipients
+      .filter((address) => !!address)
+      .map(utils.getAddress)
+      .includes(utils.getAddress(context.address));
   const onView = (info: ClaimInfo) => () => {
     let url;
     if (data.standard == "ERC721" && info.address && info.tokenId) {
