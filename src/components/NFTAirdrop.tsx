@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import { useLocation, Link } from "react-router-dom";
+import { isSafari } from "react-device-detect";
 
 import "../styles/NFTAirdrop.css";
 import useClaimer, { ClaimInfo } from "../hooks/useClaimer";
@@ -40,18 +41,21 @@ const NFTAirdrop = ({
   const location = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
-    const isSak3 = data.address == "0x5d1f6A91C7B4A575576A7Ba8d6227bcA2e807C44";
-    if (isSak3) {
-      audio.loop = true;
-      audio.play();
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
+    if (!isSafari) {
+      const isSak3 =
+        data.address == "0x5d1f6A91C7B4A575576A7Ba8d6227bcA2e807C44";
+      if (isSak3) {
+        audio.loop = true;
+        audio.play();
+      } else {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+      return () => {
+        audio.pause();
+        audio.currentTime = 0;
+      };
     }
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
   }, [data.address]);
   const { claimInfo, loadingClaimEvent, onClaim, claiming, claimError } =
     useClaimer(

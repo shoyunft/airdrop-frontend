@@ -25,6 +25,7 @@
     "merkletreejs": "^0.2.24",
     "react": "^17.0.2",
     "react-3d-viewer": "^1.0.12",
+    "react-device-detect": "^2.1.1",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^5.3.0",
