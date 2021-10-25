@@ -66,6 +66,9 @@ const NFTAirdrop = ({
       context.address,
       location
     );
+  const notWhitelisted = !data.recipients
+    .map(utils.getAddress)
+    .includes(utils.getAddress(context.address));
   const onView = (info: ClaimInfo) => () => {
     let url;
     if (data.standard == "ERC721" && info.address && info.tokenId) {
@@ -121,7 +124,7 @@ const NFTAirdrop = ({
               >
                 Change Network to Ethereum Mainnet
               </button>
-            ) : !data.recipients.includes(utils.getAddress(context.address)) ? (
+            ) : notWhitelisted ? (
               <button className={"button inverted disabled"}>
                 You're not on the whitelist
               </button>
